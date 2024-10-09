@@ -1,11 +1,11 @@
-; Autor reseni: jmeno prijmeni login
+; Autor reseni: Martin Navratil xnavram00
 
 ; Projekt 2 - INP 2024
 ; Vigenerova sifra na architekture MIPS64
 
 ; DATA SEGMENT
                 .data
-msg:            .asciiz "Hello world!" ; sem doplnte vase "jmenoprijmeni"
+msg:            .asciiz "martinnavratil" ; sem doplnte vase "jmenoprijmeni"
 cipher:         .space  31 ; misto pro zapis zasifrovaneho textu
 ; zde si muzete nadefinovat vlastni promenne ci konstanty,
 ; napr. hodnoty posuvu pro jednotlive znaky sifrovacho klice
