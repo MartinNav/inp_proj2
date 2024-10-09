@@ -18,6 +18,11 @@ params_sys5:    .space  8 ; misto pro ulozeni adresy pocatku
                 .text
 
 main:           ; ZDE NAHRADTE KOD VASIM RESENIM
+                addi    r1, r0, 30
+                enc_loop:
+                ;here will be all the instructions
+                subi r1, r1, 1
+                bne     r1, r0, enc_loop
                 daddi   r4, r0, msg ; vozrovy vypis: adresa msg do r4
                 jal     print_string ; vypis pomoci print_string - viz nize
 
