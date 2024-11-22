@@ -36,6 +36,11 @@ main:           ; ZDE NAHRADTE KOD VASIM RESENIM
                 lb      r2, msg(r1)
                 addi     r3, r3, 1
                 sb      r2, key(r3)
+                ;clean up after setup (will set all used registers to 0)
+                xor     r1, r1, r1
+                xor     r2, r2, r2
+                xor     r3, r3, r3
+                ; encryption logic will go here
 
 
                 daddi   r4, r0, msg ; vozrovy vypis: adresa msg do r4
