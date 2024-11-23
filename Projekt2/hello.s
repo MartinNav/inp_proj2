@@ -10,6 +10,7 @@ cipher:         .space  31 ; misto pro zapis zasifrovaneho textu
 ; zde si muzete nadefinovat vlastni promenne ci konstanty,
 ; napr. hodnoty posuvu pro jednotlive znaky sifrovacho klice
 key:            .asciiz "xxx"
+msg_len:        .byte 14;contains length of msg
 
 params_sys5:    .space  8 ; misto pro ulozeni adresy pocatku
                           ; retezce pro vypis pomoci syscall 5
@@ -21,26 +22,35 @@ params_sys5:    .space  8 ; misto pro ulozeni adresy pocatku
 main:           ; ZDE NAHRADTE KOD VASIM RESENIM
                 ; make sure r0 contains zero
                 xor     r0, r0, r0
+                ;make r5 with the offset this will make a from 97 to 1 as an char/byte value
+                addi    r5, r0, 96
                 ;copy/create key
                 ;copy 'n'
                 addi     r1, r0, 6
                 lb      r2, msg(r1)
+                sub     r2, r2, r5
                 sb r2, key(r0)
                 ;copy 'a'
                 addi     r1, r1, 1
                 lb      r2, msg(r1)
+                sub     r2, r2, r5
                 addi     r3, r0, 1
                 sb      r2, key(r3)
                 ;copy 'v'
                 addi     r1, r1, 1
                 lb      r2, msg(r1)
+                sub     r2, r2, r5
                 addi     r3, r3, 1
                 sb      r2, key(r3)
                 ;clean up after setup (will set all used registers to 0)
                 xor     r1, r1, r1
                 xor     r2, r2, r2
                 xor     r3, r3, r3
+                xor     r5, r5, r5
                 ; encryption logic will go here
+                lb      r1, msg_len(r0)
+encryption_loop:
+                
 
 
                 daddi   r4, r0, msg ; vozrovy vypis: adresa msg do r4
