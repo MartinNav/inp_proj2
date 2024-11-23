@@ -88,6 +88,8 @@ end_of_loop:
                 bne       r11, r1, encryption_loop
 
 
+                ;daddi    r16, r0,  cipher
+                ;sd      r16, params_sys5(r0)
                 daddi   r4, r0, msg ; vozrovy vypis: adresa msg do r4
                 jal     print_string ; vypis pomoci print_string - viz nize
 
