@@ -49,8 +49,43 @@ main:           ; ZDE NAHRADTE KOD VASIM RESENIM
                 xor     r5, r5, r5
                 ; encryption logic will go here
                 lb      r1, msg_len(r0)
+                ;iteration counter
+                addi     r11, r0, 0
 encryption_loop:
-                
+                ;get the value that should be subtracted or added
+                ;getting the key index
+                addi    r12, r0, 3
+                and     r13, r12, r11
+                bne     r12, r13, calculate_offset
+                ;key will be stored in r5
+                xor     r5, r5, r5
+                lb      r5, key(r5)
+                b is_even
+                ;check if is odd or even
+calculate_offset:
+                lb      r5, key(r13)
+
+is_even:        addi     r12, r0, 1
+                addi     r13, r0, 1
+                and      r12, r12, r11
+                beq      r12, r13, subbing_v
+adding_v:
+                ;in r15 the msg will be stored 
+                lb      r15,  msg(r11)
+                add     r15, r5, r15
+                ;TODO: check for overflows
+                sb      r15, cipher(r11)
+                b end_of_loop
+subbing_v:
+                lb      r15,  msg(r11)
+                sub r15, r15, r5
+                ;TODO: check for overflows
+                sb      r15, cipher(r11)
+
+end_of_loop:
+                ;end of loop
+                addi r11, r11, 1
+                bne       r11, r1, encryption_loop
 
 
                 daddi   r4, r0, msg ; vozrovy vypis: adresa msg do r4
