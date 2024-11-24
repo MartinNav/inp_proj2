@@ -73,8 +73,17 @@ adding_v:
                 ;in r15 the msg will be stored 
                 lb      r15,  msg(r11)
                 add     r15, r5, r15
-                ;TODO: check for overflows
-                sb      r15, cipher(r11)
+                ;TODO: check if checking for overflows works correctly
+                ; if it is more than the 123 I will need to subtract 26 from it 
+                addi    r17, r0, 123
+                sub     r17, r15, r17
+                ; I am not sure how it will deal with overflow
+                bgez    r17, fix_overflow
+                b write_to_mem_a
+fix_overflow:
+                addi r17, r0, 26
+                sub  r15, r15, r17
+write_to_mem_a: sb      r15, cipher(r11)
                 b end_of_loop
 subbing_v:
                 lb      r15,  msg(r11)
