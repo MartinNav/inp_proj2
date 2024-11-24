@@ -89,6 +89,14 @@ subbing_v:
                 lb      r15,  msg(r11)
                 sub r15, r15, r5
                 ;TODO: check for overflows
+                addi    r17, r0, 97; not sure if it should be 97 or 96
+                sub     r17, r17, r15
+                bgez    r17, fix_underflow
+                b write_to_mem_s
+fix_underflow:
+                addi r15, r15, 26
+                
+write_to_mem_s:
                 sb      r15, cipher(r11)
 
 end_of_loop:
