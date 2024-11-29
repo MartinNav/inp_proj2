@@ -59,7 +59,16 @@ add_key:
                 lb r3, ukey(r3)
                 add r3, r3, r2
                 sb r3, cipher(r1)
-                ;todo check for overflows
+
+                addi r10, r0, 122
+                sub r10, r3, r10
+                bgez r10, fix_overflow
+                b eol_check
+                ;check for overflows
+fix_overflow:
+                addi r10, r0, 26
+                sub r10, r3, r10
+                sb r10, cipher(r1)
 
 eol_check:
                 addi r1, r1, 1; will move to the next character
