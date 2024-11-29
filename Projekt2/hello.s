@@ -9,7 +9,8 @@ msg:            .asciiz "martinnavratil" ; sem doplnte vase "jmenoprijmeni"
 cipher:         .space  31 ; misto pro zapis zasifrovaneho textu
 ; zde si muzete nadefinovat vlastni promenne ci konstanty,
 ; napr. hodnoty posuvu pro jednotlive znaky sifrovacho klice
-key:            .asciiz "nav"
+key:            .asciiz "nav"; this 'variable' will contain the key
+ukey:           .space 4 ; key transform to be usefull/easy to use
 
 params_sys5:    .space  8 ; misto pro ulozeni adresy pocatku
                           ; retezce pro vypis pomoci syscall 5
@@ -23,7 +24,16 @@ main:           ; ZDE NAHRADTE KOD VASIM RESENIM
 start_of_loop:  
                 lb r2, cipher(r1); r2 will contain the unencripted message
                 beqz r2, end_of_loop; in case we hit null byte we will end the loop
+                ; logic will be here
+                andi  r3, r1, 1
+                beqz  r3, add_key
+sub_key:
 
+                ;on the end we will need to skip the end of loop check
+                b eol_check
+add_key:
+
+eol_check:
                 addi r1, r1, 1; will move to the next character
                 b start_of_loop; and repeat it again
 
