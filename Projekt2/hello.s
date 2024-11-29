@@ -1,4 +1,4 @@
-; Autor reseni: jmeno prijmeni login
+; Autor reseni: martin navratil xnavram00
 
 ; Projekt 2 - INP 2024
 ; Vigenerova sifra na architekture MIPS64
@@ -41,9 +41,10 @@ main:           ; ZDE NAHRADTE KOD VASIM RESENIM
                 ; must iterate from zero
                 addi r1, r0, 0;index of an message
 start_of_loop:  
-                lb r2, cipher(r1); r2 will contain the unencripted message
+                lb r2, msg(r1); r2 will contain the unencripted message
                 beqz r2, end_of_loop; in case we hit null byte we will end the loop
                 ; logic will be here
+                ; will compare the last bit if it is odd or even(if it should be added)
                 xor   r3, r3, r3
                 andi  r3, r1, 1
                 beqz  r3, add_key
@@ -52,6 +53,13 @@ sub_key:
                 ;on the end we will need to skip the end of loop check
                 b eol_check
 add_key:
+                xor r3, r3, r3
+                add r3, r0, r1
+                andi r3, r3, 3; only last two bits
+                lb r3, ukey(r3)
+                add r3, r3, r2
+                sb r3, cipher(r1)
+                ;todo check for overflows
 
 eol_check:
                 addi r1, r1, 1; will move to the next character
