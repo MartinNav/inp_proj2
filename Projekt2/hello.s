@@ -49,8 +49,21 @@ start_of_loop:
                 andi  r3, r1, 1
                 beqz  r3, add_key
 sub_key:
-
+                xor r3, r3, r3
+                add r3, r0, r1
+                andi r3, r3, 3
+                lb r3, ukey(r3)
+                sub r3, r2, r3
+                sb r3, cipher(r1)
+                
                 ;on the end we will need to skip the end of loop check
+                addi r10, r0, 97
+                sub  r10, r10, r3
+                bgez r10, fix_underflow
+                b eol_check
+fix_underflow:
+                addi r10, r3, 26
+                sb r10, cipher(r1)
                 b eol_check
 add_key:
                 xor r3, r3, r3
