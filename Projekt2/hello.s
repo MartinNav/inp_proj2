@@ -21,24 +21,30 @@ params_sys5:    .space  8 ; misto pro ulozeni adresy pocatku
 
 main:           ; ZDE NAHRADTE KOD VASIM RESENIM
                 ; this will copy the key to usefull(ukey) so it can be used for (while using and the 2 LSBs)
+                addi r3, r0, 96
                 lb  r2, key(r1)
+                sub r2, r2, r3
                 sb  r2, ukey(r1)
                 addi r1, r1, 1
                 lb  r2, key(r1)
+                sub r2, r2, r3
                 sb  r2, ukey(r1)
                 addi r1, r1, 1
                 lb  r2, key(r1)
+                sub r2, r2, r3
                 sb  r2, ukey(r1)
                 addi r1, r0, 1
                 lb  r2, key(r1)
+                sub r2, r2, r3
                 addi r1, r0, 3
                 sb  r2, ukey(r1)
-                
+                ; must iterate from zero
                 addi r1, r0, 0;index of an message
 start_of_loop:  
                 lb r2, cipher(r1); r2 will contain the unencripted message
                 beqz r2, end_of_loop; in case we hit null byte we will end the loop
                 ; logic will be here
+                xor   r3, r3, r3
                 andi  r3, r1, 1
                 beqz  r3, add_key
 sub_key:
