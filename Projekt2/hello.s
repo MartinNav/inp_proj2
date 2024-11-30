@@ -40,6 +40,8 @@ main:           ; ZDE NAHRADTE KOD VASIM RESENIM
                 sb  r2, ukey(r1)
                 ; must iterate from zero
                 addi r1, r0, 0;index of an message
+                addi r5, r0, 0; key counter
+                addi r9, r0, 3; barier
                 ; setup the value of 3 to the 
 start_of_loop:  
                 lb r2, msg(r1); r2 will contain the unencripted message
@@ -47,13 +49,19 @@ start_of_loop:
                 ; logic will be here
                 ; will compare the last bit if it is odd or even(if it should be added)
                 ;xor   r3, r3, r3
+                bne r5, r9, continue
+                addi r5, r0, 0
+continue:
                 andi  r3, r1, 1
                 beqz  r3, add_key
 sub_key:
                 ;xor r3, r3, r3
-                add r3, r0, r1
-                andi r3, r3, 3
-                lb r3, ukey(r3)
+                ;add r3, r0, r1
+                ;andi r3, r3, 3
+                ;addi r4, r0, 3 
+                
+
+                lb r3, ukey(r5)
                 sub r3, r2, r3
                 sb r3, cipher(r1)
                 
@@ -69,8 +77,8 @@ fix_underflow:
 add_key:
                 ;xor r3, r3, r3
                 ;add r3, r0, r1
-                andi r3, r1, 3; only last two bits
-                lb r3, ukey(r3)
+                ;andi r3, r1, 3; only last two bits
+                lb r3, ukey(r5)
                 add r3, r3, r2
                 sb r3, cipher(r1)
 
@@ -86,6 +94,7 @@ fix_overflow:
 
 eol_check:
                 addi r1, r1, 1; will move to the next character
+                addi r5, r5, 1
                 b start_of_loop; and repeat it again
 
 end_of_loop:
