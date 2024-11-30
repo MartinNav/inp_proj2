@@ -33,11 +33,6 @@ main:           ; ZDE NAHRADTE KOD VASIM RESENIM
                 lb  r2, key(r1)
                 sub r2, r2, r3
                 sb  r2, ukey(r1)
-                addi r1, r0, 0
-                lb  r2, key(r1)
-                sub r2, r2, r3
-                addi r1, r0, 3
-                sb  r2, ukey(r1)
                 ; must iterate from zero
                 addi r1, r0, 0;index of an message
                 addi r5, r0, 0; key counter
