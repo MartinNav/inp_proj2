@@ -5,11 +5,11 @@
 
 ; DATA SEGMENT
                 .data
-msg:            .asciiz "martinnavratil" ; sem doplnte vase "jmenoprijmeni"
+msg:            .asciiz "michalbidlo" ; sem doplnte vase "jmenoprijmeni"
 cipher:         .space  31 ; misto pro zapis zasifrovaneho textu
 ; zde si muzete nadefinovat vlastni promenne ci konstanty,
 ; napr. hodnoty posuvu pro jednotlive znaky sifrovacho klice
-key:            .asciiz "nav"; this 'variable' will contain the key
+key:            .asciiz "bid"; this 'variable' will contain the key
 ukey:           .space 4 ; key transform to be usefull/easy to use
 
 params_sys5:    .space  8 ; misto pro ulozeni adresy pocatku
@@ -46,7 +46,7 @@ start_of_loop:
                 beqz r2, end_of_loop; in case we hit null byte we will end the loop
                 ; logic will be here
                 ; will compare the last bit if it is odd or even(if it should be added)
-                xor   r3, r3, r3
+                ;xor   r3, r3, r3
                 andi  r3, r1, 1
                 beqz  r3, add_key
 sub_key:
@@ -68,8 +68,8 @@ fix_underflow:
                 b eol_check
 add_key:
                 ;xor r3, r3, r3
-                add r3, r0, r1
-                andi r3, r3, 3; only last two bits
+                ;add r3, r0, r1
+                andi r3, r1, 3; only last two bits
                 lb r3, ukey(r3)
                 add r3, r3, r2
                 sb r3, cipher(r1)
@@ -80,8 +80,8 @@ add_key:
                 b eol_check
                 ;check for overflows
 fix_overflow:
-                addi r10, r0, 26
-                sub r10, r3, r10
+                addi r10, r3, -26
+                ;sub r10, r3, r10
                 sb r10, cipher(r1)
 
 eol_check:
@@ -89,7 +89,8 @@ eol_check:
                 b start_of_loop; and repeat it again
 
 end_of_loop:
-                daddi   r4, r0, msg ; vozrovy vypis: adresa msg do r4
+                sb r0, cipher(r1)
+                daddi   r4, r0, cipher; vozrovy vypis: adresa msg do r4
                 jal     print_string ; vypis pomoci print_string - viz nize
 
 
