@@ -40,6 +40,7 @@ main:           ; ZDE NAHRADTE KOD VASIM RESENIM
                 sb  r2, ukey(r1)
                 ; must iterate from zero
                 addi r1, r0, 0;index of an message
+                ; setup the value of 3 to the 
 start_of_loop:  
                 lb r2, msg(r1); r2 will contain the unencripted message
                 beqz r2, end_of_loop; in case we hit null byte we will end the loop
@@ -49,7 +50,7 @@ start_of_loop:
                 andi  r3, r1, 1
                 beqz  r3, add_key
 sub_key:
-                xor r3, r3, r3
+                ;xor r3, r3, r3
                 add r3, r0, r1
                 andi r3, r3, 3
                 lb r3, ukey(r3)
@@ -66,7 +67,7 @@ fix_underflow:
                 sb r10, cipher(r1)
                 b eol_check
 add_key:
-                xor r3, r3, r3
+                ;xor r3, r3, r3
                 add r3, r0, r1
                 andi r3, r3, 3; only last two bits
                 lb r3, ukey(r3)
